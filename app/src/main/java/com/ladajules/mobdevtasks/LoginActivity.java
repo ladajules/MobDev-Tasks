@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         String password = etPassword.getText().toString();
 
         if (username.equals("admin") && password.equals("admin")) {
-            Intent newIntent = new Intent(this, ProfileActivity.class);
+            Intent newIntent = new Intent(this, ProductActivity.class);
             newIntent.putExtra("username", username);
             newIntent.putExtra("password", password);
             startActivity(newIntent);

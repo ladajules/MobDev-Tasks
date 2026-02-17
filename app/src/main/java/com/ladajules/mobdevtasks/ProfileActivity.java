@@ -7,7 +7,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.snackbar.Snackbar;
+import java.util.ArrayList;
+import java.util.Locale;
 
 public class ProfileActivity extends AppCompatActivity {
     private Button btnLogout;
@@ -22,20 +23,29 @@ public class ProfileActivity extends AppCompatActivity {
         btnLogout = findViewById(R.id.btnLogout);
         tvProfile = findViewById(R.id.tvProfile);
 
-        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Login successful!", Snackbar.LENGTH_SHORT);
-        snackbar.setBackgroundTint(0xFF008000);
-        snackbar.show();
-
         btnLogout.setOnClickListener(v -> {
             Intent newIntent = new Intent(this, LoginActivity.class);
             startActivity(newIntent);
         });
 
         if (intent != null) {
-            String username = intent.getStringExtra("username");
-            String password = intent.getStringExtra("password");
+            ArrayList<ProductActivity.Product> purchasedProducts = (ArrayList<ProductActivity.Product>) intent.getSerializableExtra("purchasedProducts");
+            double totalPrice = intent.getDoubleExtra("totalPrice", 0.0);
 
-            tvProfile.setText("Username: " + username + "\nPassword: " + password);
+            if (purchasedProducts != null && !purchasedProducts.isEmpty()) {
+                StringBuilder purchaseDetails = new StringBuilder("Purchased Products:\n\n");
+                for (ProductActivity.Product product : purchasedProducts) {
+                    purchaseDetails.append(String.format(Locale.getDefault(),
+                            "- %s (x%d) - ₱%.2f each\n",
+                            product.name, product.quantity, product.price));
+                }
+                purchaseDetails.append(String.format(Locale.getDefault(),
+                        "\nTotal Price: ₱%.2f", totalPrice));
+
+                tvProfile.setText(purchaseDetails.toString());
+            } else {
+                tvProfile.setText("No products purchased.");
+            }
         }
     }
 }
