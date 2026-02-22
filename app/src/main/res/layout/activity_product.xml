@@ -5,7 +5,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:fitsSystemWindows="true">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingBottom="8dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_arrow_back"
+            android:background="?attr/selectableItemBackground"
+            app:tint="#000000"
+            android:contentDescription="Go Back" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Shop Products"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginStart="8dp"
+            android:textColor="@android:color/black"/>
+    </LinearLayout>
 
     <GridLayout
         android:layout_width="match_parent"
@@ -66,10 +94,10 @@
                         android:id="@+id/btnPlus1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/black"
+                        android:backgroundTint="@android:color/black"
                         android:minWidth="48dp"
                         android:text="+"
-                        android:textColor="@color/white" />
+                        android:textColor="@android:color/white" />
 
                     <TextView
                         android:id="@+id/tvNumber1"
@@ -85,10 +113,10 @@
                         android:id="@+id/btnMinus1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/black"
+                        android:backgroundTint="@android:color/black"
                         android:minWidth="48dp"
                         android:text="-"
-                        android:textColor="@color/white" />
+                        android:textColor="@android:color/white" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -144,10 +172,10 @@
                         android:id="@+id/btnPlus2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/black"
+                        android:backgroundTint="@android:color/black"
                         android:minWidth="48dp"
                         android:text="+"
-                        android:textColor="@color/white" />
+                        android:textColor="@android:color/white" />
 
                     <TextView
                         android:id="@+id/tvNumber2"
@@ -163,10 +191,10 @@
                         android:id="@+id/btnMinus2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/black"
+                        android:backgroundTint="@android:color/black"
                         android:minWidth="48dp"
                         android:text="-"
-                        android:textColor="@color/white" />
+                        android:textColor="@android:color/white" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -222,10 +250,10 @@
                         android:id="@+id/btnPlus3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/black"
+                        android:backgroundTint="@android:color/black"
                         android:minWidth="48dp"
                         android:text="+"
-                        android:textColor="@color/white" />
+                        android:textColor="@android:color/white" />
 
                     <TextView
                         android:id="@+id/tvNumber3"
@@ -241,10 +269,10 @@
                         android:id="@+id/btnMinus3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/black"
+                        android:backgroundTint="@android:color/black"
                         android:minWidth="48dp"
                         android:text="-"
-                        android:textColor="@color/white" />
+                        android:textColor="@android:color/white" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -300,10 +328,10 @@
                         android:id="@+id/btnPlus4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/black"
+                        android:backgroundTint="@android:color/black"
                         android:minWidth="48dp"
                         android:text="+"
-                        android:textColor="@color/white" />
+                        android:textColor="@android:color/white" />
 
                     <TextView
                         android:id="@+id/tvNumber4"
@@ -319,10 +347,10 @@
                         android:id="@+id/btnMinus4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/black"
+                        android:backgroundTint="@android:color/black"
                         android:minWidth="48dp"
                         android:text="-"
-                        android:textColor="@color/white" />
+                        android:textColor="@android:color/white" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -378,10 +406,10 @@
                         android:id="@+id/btnPlus5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/black"
+                        android:backgroundTint="@android:color/black"
                         android:minWidth="48dp"
                         android:text="+"
-                        android:textColor="@color/white" />
+                        android:textColor="@android:color/white" />
 
                     <TextView
                         android:id="@+id/tvNumber5"
@@ -397,10 +425,10 @@
                         android:id="@+id/btnMinus5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/black"
+                        android:backgroundTint="@android:color/black"
                         android:minWidth="48dp"
                         android:text="-"
-                        android:textColor="@color/white" />
+                        android:textColor="@android:color/white" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -456,10 +484,10 @@
                         android:id="@+id/btnPlus6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/black"
+                        android:backgroundTint="@android:color/black"
                         android:minWidth="48dp"
                         android:text="+"
-                        android:textColor="@color/white" />
+                        android:textColor="@android:color/white" />
 
                     <TextView
                         android:id="@+id/tvNumber6"
@@ -475,22 +503,32 @@
                         android:id="@+id/btnMinus6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/black"
+                        android:backgroundTint="@android:color/black"
                         android:minWidth="48dp"
                         android:text="-"
-                        android:textColor="@color/white" />
+                        android:textColor="@android:color/white" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
     </GridLayout>
 
-    <Button
-        android:id="@+id/btnAddToCart"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/black"
-        android:text="Add to Cart"
-        android:textColor="@color/white" />
+        android:orientation="vertical"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="8dp">
+
+        <Button
+            android:id="@+id/btnAddToCart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/black"
+            android:text="Add to Cart"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
 
 </LinearLayout>

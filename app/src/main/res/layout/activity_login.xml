@@ -28,7 +28,7 @@
             android:layout_marginBottom="15dp"
             android:textSize="30dp"
             android:textStyle="bold"
-            android:textColor="@color/black" />
+            android:textColor="@android:color/black" />
 
         <!-- Text Field Inputs -->
         <com.google.android.material.textfield.TextInputLayout
@@ -37,8 +37,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             app:boxBackgroundColor="#d3d3d3"
-            app:boxStrokeColor="@color/black"
-            app:hintTextColor="@color/black"
+            app:boxStrokeColor="@android:color/black"
+            app:hintTextColor="@android:color/black"
             app:boxStrokeErrorColor="#ff0000"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -57,8 +57,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             app:boxBackgroundColor="#d3d3d3"
-            app:boxStrokeColor="@color/black"
-            app:hintTextColor="@color/black"
+            app:boxStrokeColor="@android:color/black"
+            app:hintTextColor="@android:color/black"
             app:endIconMode="password_toggle"
             app:boxStrokeErrorColor="#ff0000"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -86,9 +86,9 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
-                android:backgroundTint="@color/black"
+                android:backgroundTint="@android:color/black"
                 android:text="Login"
-                android:textColor="@color/white" />
+                android:textColor="@android:color/white" />
 
             <Button
                 android:id="@+id/btnClear"
@@ -96,7 +96,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="Clear"
-                android:textColor="@color/black"
+                android:textColor="@android:color/black"
                 android:backgroundTint="#D3D3D3"
                 android:layout_marginLeft="5dp"/>
 

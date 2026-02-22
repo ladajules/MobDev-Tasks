@@ -70,9 +70,10 @@ public class LoginActivity extends AppCompatActivity {
         String password = etPassword.getText().toString();
 
         if (username.equals("admin") && password.equals("admin")) {
-            Intent newIntent = new Intent(this, ProductActivity.class);
+            Intent newIntent = new Intent(this, ProfileActivity.class);
             newIntent.putExtra("username", username);
             newIntent.putExtra("password", password);
+            newIntent.putExtra("isFromLogin", true);
             startActivity(newIntent);
             attempts = 0;
 
