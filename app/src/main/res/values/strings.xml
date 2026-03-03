@@ -2,4 +2,12 @@
     <string name="app_name">MobDev Tasks</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string-array name="filters">
+        <item>Lowest Price</item>
+        <item>Highest Price</item>
+        <item>A-Z</item>
+        <item>Z-A</item>
+        <item>Size</item>
+        <item>Color</item>
+    </string-array>
 </resources>
