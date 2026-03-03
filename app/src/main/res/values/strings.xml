@@ -2,12 +2,28 @@
     <string name="app_name">MobDev Tasks</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string-array name="filters">
+    <string-array name="sorts">
         <item>Lowest Price</item>
         <item>Highest Price</item>
         <item>A-Z</item>
         <item>Z-A</item>
-        <item>Size</item>
-        <item>Color</item>
+    </string-array>
+    <string-array name="size_filters">
+        <item>All Sizes</item>
+        <item>Small</item>
+        <item>Medium</item>
+        <item>Large</item>
+    </string-array>
+    <string-array name="color_filters">
+        <item>All Colors</item>
+        <item>Red</item>
+        <item>Yellow</item>
+        <item>Green</item>
+        <item>Orange</item>
+        <item>Purple</item>
+        <item>Blue</item>
+        <item>Black</item>
+        <item>Black &amp; White</item>
+        <item>Pink</item>
     </string-array>
 </resources>

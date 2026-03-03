@@ -26,12 +26,16 @@ import java.util.Map;
 
 public class CategoryActivity extends AppCompatActivity {
     private Spinner spinner;
+    private Spinner sizeFilterSpinner;
+    private Spinner colorFilterSpinner;
     private RecyclerView recyclerView;
     private SearchView searchView;
     private ItemAdapter itemAdapter;
     private List<Item> allItems;
-    private String currentFilter = "A-Z";
+    private String currentSort = "A-Z";
     private String currentQuery = "";
+    private String currentSizeFilter = "All Sizes";
+    private String currentColorFilter = "All Colors";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,19 +43,37 @@ public class CategoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_category);
 
         spinner = findViewById(R.id.sCategories);
+        sizeFilterSpinner = findViewById(R.id.sSizeFilter);
+        colorFilterSpinner = findViewById(R.id.sColorFilter);
         recyclerView = findViewById(R.id.rvCategoryItems);
         searchView = findViewById(R.id.svSearch);
 
         setupData();
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+        ArrayAdapter<CharSequence> sortAdapter = ArrayAdapter.createFromResource(
                 this,
-                R.array.filters,
+                R.array.sorts,
                 android.R.layout.simple_spinner_item
         );
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(sortAdapter);
         spinner.setSelection(2);
+
+        ArrayAdapter<CharSequence> sizeAdapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.size_filters,
+                android.R.layout.simple_spinner_item
+        );
+        sizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sizeFilterSpinner.setAdapter(sizeAdapter);
+
+        ArrayAdapter<CharSequence> colorAdapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.color_filters,
+                android.R.layout.simple_spinner_item
+        );
+        colorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        colorFilterSpinner.setAdapter(colorAdapter);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         itemAdapter = new ItemAdapter(new ArrayList<>());
@@ -62,7 +84,29 @@ public class CategoryActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                currentFilter = parent.getItemAtPosition(position).toString();
+                currentSort = parent.getItemAtPosition(position).toString();
+                applyFilterAndSearch();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
+
+        sizeFilterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                currentSizeFilter = parent.getItemAtPosition(position).toString();
+                applyFilterAndSearch();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
+
+        colorFilterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                currentColorFilter = parent.getItemAtPosition(position).toString();
                 applyFilterAndSearch();
             }
 
@@ -121,7 +165,15 @@ public class CategoryActivity extends AppCompatActivity {
             items.removeIf(item -> !item.getName().toLowerCase().contains(currentQuery));
         }
 
-        switch (currentFilter) {
+        if (!currentSizeFilter.equals("All Sizes")) {
+            items.removeIf(item -> !item.getSize().equals(currentSizeFilter));
+        }
+
+        if (!currentColorFilter.equals("All Colors")) {
+            items.removeIf(item -> !item.getColor().equals(currentColorFilter));
+        }
+
+        switch (currentSort) {
             case "A-Z":
                 Collections.sort(items, (a, b) -> a.getName().compareTo(b.getName()));
                 break;
@@ -133,12 +185,6 @@ public class CategoryActivity extends AppCompatActivity {
                 break;
             case "Highest Price":
                 items.sort((item1, item2) -> Double.compare(item2.getPrice(), item1.getPrice()));
-                break;
-            case "Size":
-                items.sort((item1, item2) -> item1.getSize().compareTo(item2.getSize()));
-                break;
-            case "Color":
-                items.sort((item1, item2) -> item1.getColor().compareTo(item2.getColor()));
                 break;
         }
 
