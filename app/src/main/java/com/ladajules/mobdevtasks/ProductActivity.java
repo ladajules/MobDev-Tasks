@@ -4,75 +4,90 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.snackbar.Snackbar;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ProductActivity extends AppCompatActivity {
     private String username;
     private String password;
+    private List<Product> productsList;
+    private RecyclerView rvProducts;
 
-    private final int[] plusButtonIds = {R.id.btnPlus1, R.id.btnPlus2, R.id.btnPlus3, R.id.btnPlus4, R.id.btnPlus5, R.id.btnPlus6};
-    private final int[] minusButtonIds = {R.id.btnMinus1, R.id.btnMinus2, R.id.btnMinus3, R.id.btnMinus4, R.id.btnMinus5, R.id.btnMinus6};
-    private final int[] numberViewIds = {R.id.tvNumber1, R.id.tvNumber2, R.id.tvNumber3, R.id.tvNumber4, R.id.tvNumber5, R.id.tvNumber6};
-    private final int[] productNameViewIds = {R.id.tvProductName1, R.id.tvProductName2, R.id.tvProductName3, R.id.tvProductName4, R.id.tvProductName5, R.id.tvProductName6};
-    private final int[] productPriceViewIds = {R.id.tvProductPrice1, R.id.tvProductPrice2, R.id.tvProductPrice3, R.id.tvProductPrice4, R.id.tvProductPrice5, R.id.tvProductPrice6};
-    private final int[] imageResourceIds = {R.drawable.fitbit, R.drawable.candle, R.drawable.stanley, R.drawable.sony, R.drawable.sanitizer, R.drawable.iphone};
+    private final ActivityResultLauncher<Intent> detailLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    Product updatedProduct = result.getData().getParcelableExtra("UPDATED_PRODUCT");
+
+                    if (updatedProduct != null) {
+                        for (int i = 0; i < productsList.size(); i++) {
+                            if (productsList.get(i).getName().equals(updatedProduct.getName())) {
+                                productsList.set(i, updatedProduct);
+                                if (rvProducts.getAdapter() != null) {
+                                    rvProducts.getAdapter().notifyItemChanged(i);
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
 
+        rvProducts = findViewById(R.id.rvProducts);
+        rvProducts.setLayoutManager(new GridLayoutManager(this, 2));
+
+        productsList = getProducts();
+
         Intent intent = getIntent();
-        username = intent.getStringExtra("username");
-        password = intent.getStringExtra("password");
+        if (intent != null) {
+            username = intent.getStringExtra("username");
+            password = intent.getStringExtra("password");
 
-        ArrayList<Product> existingCart = (ArrayList<Product>) intent.getSerializableExtra("purchasedProducts");
-        if (existingCart == null) {
-            existingCart = new ArrayList<>();
-        }
-
-        for (int i = 0; i < plusButtonIds.length; i++) {
-            setupProductCard(plusButtonIds[i], minusButtonIds[i], numberViewIds[i]);
-
-            TextView tvProductName = findViewById(productNameViewIds[i]);
-            TextView tvNumber = findViewById(numberViewIds[i]);
-            String currentProductName = tvProductName.getText().toString();
-
-            for (Product p : existingCart) {
-                if (p.getName().equals(currentProductName)) {
-                    tvNumber.setText(String.valueOf(p.getQuantity()));
-                    break;
+            ArrayList<Product> existingCart = intent.getParcelableArrayListExtra("purchasedProducts");
+            if (existingCart != null && productsList != null) {
+                for (Product cartItem : existingCart) {
+                    for (Product product : productsList) {
+                        if (product.getName().equals(cartItem.getName())) {
+                            product.setQuantity(cartItem.getQuantity());
+                            break;
+                        }
+                    }
                 }
             }
         }
 
+        ProductAdapter adapter = new ProductAdapter(productsList, product -> {
+            Intent productDetailIntent = new Intent(ProductActivity.this, ProductDetailActivity.class);
+            productDetailIntent.putExtra("PRODUCT", (android.os.Parcelable) product);
+            detailLauncher.launch(productDetailIntent);
+        });
+        rvProducts.setAdapter(adapter);
+
         ImageButton btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(v -> finish());
 
-        Button btnAddToCart = findViewById(R.id.btnAddToCart);
-        btnAddToCart.setOnClickListener(v -> {
+        Button btnCheckout = findViewById(R.id.btnCheckout);
+        btnCheckout.setOnClickListener(v -> {
             ArrayList<Product> updatedCart = new ArrayList<>();
             double updatedTotalPrice = 0.0;
 
-            for (int i = 0; i < numberViewIds.length; i++) {
-                TextView tvNumber = findViewById(numberViewIds[i]);
-                int quantity = Integer.parseInt(tvNumber.getText().toString());
-
-                if (quantity > 0) {
-                    TextView tvProductName = findViewById(productNameViewIds[i]);
-                    TextView tvProductPrice = findViewById(productPriceViewIds[i]);
-                    String name = tvProductName.getText().toString();
-                    double price = Double.parseDouble(tvProductPrice.getText().toString().replaceAll("[₱$]", ""));
-                    int imageId = imageResourceIds[i];
-
-                    updatedCart.add(new Product(name, price, quantity, imageId));
-                    updatedTotalPrice += price * quantity;
+            for (Product p : productsList) {
+                if (p.getQuantity() > 0) {
+                    updatedCart.add(p);
+                    updatedTotalPrice += p.getPrice() * p.getQuantity();
                 }
             }
 
@@ -80,29 +95,21 @@ public class ProductActivity extends AppCompatActivity {
             profileIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             profileIntent.putExtra("username", username);
             profileIntent.putExtra("password", password);
-            profileIntent.putExtra("purchasedProducts", updatedCart);
+
+            profileIntent.putParcelableArrayListExtra("purchasedProducts", updatedCart);
             profileIntent.putExtra("totalPrice", updatedTotalPrice);
             startActivity(profileIntent);
         });
     }
 
-    private void setupProductCard(int plusButtonId, int minusButtonId, int numberViewId) {
-        Button btnPlus = findViewById(plusButtonId);
-        Button btnMinus = findViewById(minusButtonId);
-        TextView tvNumber = findViewById(numberViewId);
-
-        btnPlus.setOnClickListener(v -> {
-            int quantity = Integer.parseInt(tvNumber.getText().toString());
-            quantity++;
-            tvNumber.setText(String.valueOf(quantity));
-        });
-
-        btnMinus.setOnClickListener(v -> {
-            int quantity = Integer.parseInt(tvNumber.getText().toString());
-            if (quantity > 0) {
-                quantity--;
-                tvNumber.setText(String.valueOf(quantity));
-            }
-        });
+    public List<Product> getProducts() {
+        List<Product> products = new ArrayList<>();
+        products.add(new Product("Fitbit", 199.99, 0, "Iz a cool fitness watch to track your fitness", R.drawable.fitbit));
+        products.add(new Product("Candle", 14.99, 0, "So you could see in the dark", R.drawable.candle));
+        products.add(new Product("Stanley", 49.99, 0, "You can hide beer in here to go inside the school and get drunk :)",R.drawable.stanley));
+        products.add(new Product("Sony", 299.99, 0, "You can listen to music with this", R.drawable.sony));
+        products.add(new Product("Sanitizer", 9.99, 0, "To keep you safe from germs", R.drawable.sanitizer));
+        products.add(new Product("Iphone", 999.99, 0, "The not so best phone you could ever have", R.drawable.iphone));
+        return products;
     }
 }

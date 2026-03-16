@@ -37,7 +37,6 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        Intent intent = getIntent();
         btnLogout = findViewById(R.id.btnLogout);
         rvPurchasedProducts = findViewById(R.id.rvPurchasedProducts);
         tvTotalPrice = findViewById(R.id.tvTotalPrice);
@@ -48,20 +47,21 @@ public class ProfileActivity extends AppCompatActivity {
         ivProfileImg = findViewById(R.id.ivProfileImg);
         btnShop = findViewById(R.id.btnShop);
 
-        boolean isFromLogin = intent.getBooleanExtra("isFromLogin", false);
-        if (isFromLogin) {
-            Snackbar.make(findViewById(android.R.id.content), "Login successful!", Snackbar.LENGTH_SHORT)
-                    .setBackgroundTint(0xFF008000)
-                    .show();
-        }
-
-        tvUsername.setText(intent.getStringExtra("username"));
-        tvPassword.setText(intent.getStringExtra("password"));
-        ivProfileImg.setImageResource(R.drawable.default_avatar);
-
+        Intent intent = getIntent();
         if (intent != null) {
+            boolean isFromLogin = intent.getBooleanExtra("isFromLogin", false);
+            if (isFromLogin) {
+                Snackbar.make(findViewById(android.R.id.content), "Login successful!", Snackbar.LENGTH_SHORT)
+                        .setBackgroundTint(0xFF008000)
+                        .show();
+            }
+
+            tvUsername.setText(intent.getStringExtra("username"));
+            tvPassword.setText(intent.getStringExtra("password"));
+            ivProfileImg.setImageResource(R.drawable.default_avatar);
+
             if (intent.hasExtra("purchasedProducts")) {
-                currentCart = (ArrayList<Product>) intent.getSerializableExtra("purchasedProducts");
+                currentCart = intent.getParcelableArrayListExtra("purchasedProducts");
                 currentTotal = intent.getDoubleExtra("totalPrice", 0.0);
             }
 
@@ -75,6 +75,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                 tvTotalPrice.setText(String.format(Locale.getDefault(), "₱%.2f", currentTotal));
             } else {
+                currentCart = new ArrayList<>();
                 vfCartContent.setDisplayedChild(EMPTY_CART_VIEW_INDEX);
                 llTotal.setVisibility(View.GONE);
             }
@@ -84,7 +85,8 @@ public class ProfileActivity extends AppCompatActivity {
             Intent shopIntent = new Intent(this, ProductActivity.class);
             shopIntent.putExtra("username", tvUsername.getText().toString());
             shopIntent.putExtra("password", tvPassword.getText().toString());
-            shopIntent.putExtra("purchasedProducts", currentCart);
+
+            shopIntent.putParcelableArrayListExtra("purchasedProducts", currentCart);
             shopIntent.putExtra("totalPrice", currentTotal);
             startActivity(shopIntent);
         });

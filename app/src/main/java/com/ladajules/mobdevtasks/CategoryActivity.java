@@ -31,6 +31,7 @@ public class CategoryActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SearchView searchView;
     private ItemAdapter itemAdapter;
+    private ImageView ibBackToProfile;
     private List<Item> allItems;
     private String currentSort = "A-Z";
     private String currentQuery = "";
@@ -47,6 +48,14 @@ public class CategoryActivity extends AppCompatActivity {
         colorFilterSpinner = findViewById(R.id.sColorFilter);
         recyclerView = findViewById(R.id.rvCategoryItems);
         searchView = findViewById(R.id.svSearch);
+        ibBackToProfile = findViewById(R.id.ibBackToProfile);
+
+        ibBackToProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         setupData();
 
@@ -127,6 +136,8 @@ public class CategoryActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+
     }
 
     private void setupData() {
